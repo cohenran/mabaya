@@ -2,13 +2,16 @@ package com.mabaya.sponserads.service.impl;
 
 import com.mabaya.sponserads.dao.CampaignRepository;
 import com.mabaya.sponserads.dao.ProductRepository;
+import com.mabaya.sponserads.dao.ProductToCampaingsRepository;
 import com.mabaya.sponserads.model.CampaignEntity;
 import com.mabaya.sponserads.model.ProductEntity;
+import com.mabaya.sponserads.model.ProductToCampaingsEntity;
 import com.mabaya.sponserads.service.AdService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,19 +22,31 @@ public class AdServiceImpl implements AdService {
 	private CampaignRepository campaignRepository;
 	@Resource
 	private ProductRepository productRepositpry;
+	@Resource
+	private ProductToCampaingsRepository productToCampaingsRepository;
 
 	@Override
-	public CampaignEntity createCampaign(String name, CampaignEntity campaignEntity) {
+	public CampaignEntity createCampaign(String name, final CampaignEntity campaignEntity) {
 		campaignEntity.setName(name);
+		List<ProductEntity> productEntity = productRepositpry.getById(
+				campaignEntity.getProductToCampaingsEntity().stream().map(pc -> pc.getProductEntity().getId()).collect(Collectors.toList()));
+		
+		List<ProductToCampaingsEntity> productToCampaignsEntities = productEntity.stream().map(p -> new ProductToCampaingsEntity(p, campaignEntity)).collect(Collectors.toList());
+		
+		campaignEntity.setProductToCampaingsEntity(productToCampaignsEntities);
 
-		campaignEntity = campaignRepository.save(campaignEntity);
-
-		return campaignEntity;
+		CampaignEntity savedCampaignEntity = campaignRepository.save(campaignEntity);
+		
+		productToCampaingsRepository.saveAll(productEntity.stream().map(p -> new ProductToCampaingsEntity(p, campaignEntity)).collect(Collectors.toList()));
+		
+		return savedCampaignEntity;
 	}
 
 	@Override
 	@Transactional
 	public ProductEntity serveAd(String category) {
+		return null;
+	}/*
 		List<ProductEntity> productEntities = productRepositpry.findByCategory(category);
 		ProductEntity returnedProduct;
 
@@ -58,5 +73,5 @@ public class AdServiceImpl implements AdService {
 		}
 
 		return returnedProduct;
-	}
+	}*/
 }

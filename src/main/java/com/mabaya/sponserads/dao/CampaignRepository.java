@@ -17,4 +17,18 @@ public interface CampaignRepository extends CrudRepository<CampaignEntity, Integ
 	@Query(value = "SELECT * FROM campaign where " +
 			"(YEAR(CURRENT_DATE()) - YEAR(start_date)) * 365 + DAYOFYEAR(CURRENT_DATE()) - DAYOFYEAR(start_date) < 10", nativeQuery = true)
 	List<CampaignEntity> getActiveCampaigns();
+	
+	@Query(value = 
+			"SELECT * from campaign campaign INNER JOIN product product " +
+			"ON campaign.productId = product.id INNER JOIN CAMPAIGN_PRODUCT_ENTITIES " + 
+			"ON product.id = CAMPAIGN_PRODUCT_ENTITIES.PRODUCT_ENTITIES_ID " +
+			"WHERE product.category = category", nativeQuery = true)
+	List<CampaignEntity> getCampaignsByProductCategory(String category);
+	
+	@Query(value = "select table_name, column_name " +
+			"from information_schema.columns", nativeQuery = true)
+	List<String> columns();
+
+	@Query(value = "select * from CAMPAIGN_PRODUCT_ENTITIES", nativeQuery = true)
+	List<String> columns2();
 }
