@@ -44,7 +44,7 @@ public class AdServiceTest {
 	}
 
 	@Test
-	public void createCampaign() {
+	public void createCampaignTest() {
 		CampaignEntity testCampaignEntity = new CampaignEntity("test", Collections.singletonList(PRODUCT), LocalDate.of(2021, 01, 01), 0.1f);
 
 		when(campaignRepository.save(testCampaignEntity)).thenReturn(testCampaignEntity);
@@ -55,7 +55,7 @@ public class AdServiceTest {
 	}
 
 	@Test
-	public void serveAd() {
+	public void serveAdTest() {
 		when(productRepositpry.findByCategory(GAMES)).thenReturn(Collections.singletonList(PRODUCT));
 		ProductEntity returnedProduct = adService.serveAd(GAMES);
 

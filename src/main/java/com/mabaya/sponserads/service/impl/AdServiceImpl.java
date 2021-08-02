@@ -35,12 +35,7 @@ public class AdServiceImpl implements AdService {
 		if (productEntities.isEmpty()) {
 			returnedProduct = productRepositpry.getHighestBid();
 		} else {
-			productEntities.sort(new Comparator<ProductEntity>() {
-				@Override
-				public int compare(ProductEntity o1, ProductEntity o2) {
-					return o1.getPrice().compareTo(o2.getPrice());
-				}
-			});
+			productEntities.sort((o1, o2) -> o2.getPrice().compareTo(o1.getPrice()));
 			
 			returnedProduct = productEntities.get(0);
 		}
