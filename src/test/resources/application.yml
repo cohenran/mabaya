@@ -4,7 +4,10 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password: password
+    initialization-mode: never
   jpa:
+    hibernate:
+      ddl-auto=update:
     properties:
       hibernate:
         show_sql=true:

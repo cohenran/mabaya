@@ -3,8 +3,10 @@ package com.mabaya.sponserads.utils;
 import com.mabaya.sponserads.dao.CampaignRepository;
 import com.mabaya.sponserads.dao.ProductRepository;
 import com.mabaya.sponserads.model.ProductEntity;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +20,11 @@ public class DBUtils {
 	private ProductRepository productRepository;
 	
 	private Random rnd = new Random();
-	private List<ProductEntity> productEntities;
 	
+	@Getter
+	private List<ProductEntity> productEntities;
+
+	@PostConstruct
 	public List<ProductEntity> getRandomProducts() {
 		List<ProductEntity> productEntities = productRepository.findAll();
 		

@@ -34,7 +34,10 @@ public class CampaignGenerator extends ProductsGenerator {
 	private Long campaignsAmount;
 
 	private Random rnd = new Random();
-	
+
+	/**
+	 * Make sure that many campaign are created with many products
+	 */
 	@PostConstruct
 	public void generate() {
 		List<ProductEntity> productEntities = productRepository.findAll();
