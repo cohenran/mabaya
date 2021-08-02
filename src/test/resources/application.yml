@@ -1,0 +1,20 @@
+spring:
+  datadource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        show_sql=true:
+
+server:
+  servlet:
+    context-path: /ads
+  port: 8080
+
+consts:
+  category: Games, Sports, Fasion, Literature, Perfume
+  products_amount: 100
+  campaigns_amount: 10

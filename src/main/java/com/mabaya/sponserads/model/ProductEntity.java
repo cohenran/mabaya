@@ -2,10 +2,7 @@ package com.mabaya.sponserads.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "product")
 public class ProductEntity {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@NonNull
 	private String category;

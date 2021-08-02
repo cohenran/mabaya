@@ -11,7 +11,7 @@ import java.util.List;
 public interface CampaignRepository extends CrudRepository<CampaignEntity, Integer> {
 	List<CampaignEntity> findAll();
 	
-	List<CampaignEntity> findByName(String name);
+	CampaignEntity findByName(String name);
 	
 	// add 365 times year difference to make up dates like 05-01-2022
 	@Query(value = "SELECT * FROM campaign where " +

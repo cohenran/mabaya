@@ -1,7 +1,7 @@
 package com.mabaya.sponserads.service.impl;
 
 import com.mabaya.sponserads.dao.CampaignRepository;
-import com.mabaya.sponserads.dao.ProductRepositpry;
+import com.mabaya.sponserads.dao.ProductRepository;
 import com.mabaya.sponserads.model.CampaignEntity;
 import com.mabaya.sponserads.model.ProductEntity;
 import com.mabaya.sponserads.service.AdService;
@@ -16,13 +16,13 @@ public class AdServiceImpl implements AdService {
 	@Resource
 	private CampaignRepository campaignRepository;
 	@Resource
-	private ProductRepositpry productRepositpry;
+	private ProductRepository productRepositpry;
 	
 	@Override
 	public CampaignEntity createCampaign(String name, CampaignEntity campaignEntity) {
 		campaignEntity.setName(name);
 
-		campaignRepository.save(campaignEntity);
+		campaignEntity = campaignRepository.save(campaignEntity);
 
 		return campaignEntity;
 	}

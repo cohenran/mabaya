@@ -1,6 +1,6 @@
 package com.mabaya.sponserads.components;
 
-import com.mabaya.sponserads.dao.ProductRepositpry;
+import com.mabaya.sponserads.dao.ProductRepository;
 import com.mabaya.sponserads.model.ProductEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Component
 public class ProductsGenerator {
 	@Resource
-	private ProductRepositpry productRepositpry;
+	private ProductRepository productRepositpry;
 
 	@Value("${consts.category}")
 	private String[] categories;

@@ -1,7 +1,7 @@
 package com.mabaya.sponserads.controller;
 
 import com.mabaya.sponserads.dao.CampaignRepository;
-import com.mabaya.sponserads.dao.ProductRepositpry;
+import com.mabaya.sponserads.dao.ProductRepository;
 import com.mabaya.sponserads.model.CampaignEntity;
 import com.mabaya.sponserads.model.ProductEntity;
 import com.mabaya.sponserads.service.AdService;
@@ -26,7 +26,7 @@ public class AdsController {
 	@Resource
 	private CampaignRepository campaignRepository;
 	@Resource
-	private ProductRepositpry productRepositpry;
+	private ProductRepository productRepositpry;
 
 	@PostMapping("createCampaign")
 	public ResponseEntity<CampaignEntity> createCampaign(@RequestParam String name, @RequestBody CampaignEntity campaignEntity) {

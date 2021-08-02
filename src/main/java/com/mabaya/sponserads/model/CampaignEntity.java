@@ -19,7 +19,9 @@ import java.util.List;
 public class CampaignEntity {
 	@Id
 	private String name;
-	@OneToMany
+	// One product can be in many campaign, and each campaign has many products = ManyToMany
+	@ManyToMany
+	@JoinColumn(name = "id")
 	private List<ProductEntity> productEntities;
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate startDate;
