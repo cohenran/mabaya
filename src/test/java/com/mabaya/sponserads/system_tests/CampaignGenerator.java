@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,7 +47,13 @@ public class CampaignGenerator extends ProductsGenerator {
 		for (int i = 0; i < campaignsAmount; i++) {
 			List<ProductEntity> innerProducts = dbUtils.getRandomProducts();
 			
-			CampaignEntity campaignEntity = new CampaignEntity(String.valueOf(i), innerProducts, LocalDate.now(), rnd.nextFloat());
+			// up until twenty days from today
+			Long twentyDaysLongNum = rnd.nextInt(20 * 24 * 60 * 60) - 20 * 24 * 60 * 60 + System.currentTimeMillis();
+			
+			LocalDate date = Instant.ofEpochMilli(twentyDaysLongNum).atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			CampaignEntity campaignEntity = new CampaignEntity(String.valueOf(i), innerProducts, date, rnd.nextFloat());
+			
 			campaignRepository.save(campaignEntity);
 		}
 	}

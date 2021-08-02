@@ -33,9 +33,8 @@ public class AdServiceTest {
 	@InjectMocks
 	private AdServiceImpl adService;
 	
-	private static final String GAMES = "Games";
 	private final ProductEntity PRODUCT = new ProductEntity("test", "test", 0.1f, "abc");
-
+	private CampaignEntity testCampaignEntity = new CampaignEntity("test", Collections.singletonList(PRODUCT), LocalDate.now(), 0.1f);
 	/**
 	 * Remove the TEST log file before/after the test
 	 */
@@ -45,8 +44,6 @@ public class AdServiceTest {
 
 	@Test
 	public void createCampaignTest() {
-		CampaignEntity testCampaignEntity = new CampaignEntity("test", Collections.singletonList(PRODUCT), LocalDate.of(2021, 01, 01), 0.1f);
-
 		when(campaignRepository.save(testCampaignEntity)).thenReturn(testCampaignEntity);
 
 		CampaignEntity returnedCampaignEntity = adService.createCampaign("test", testCampaignEntity);
@@ -56,8 +53,9 @@ public class AdServiceTest {
 
 	@Test
 	public void serveAdTest() {
-		when(productRepositpry.findByCategory(GAMES)).thenReturn(Collections.singletonList(PRODUCT));
-		ProductEntity returnedProduct = adService.serveAd(GAMES);
+		when(productRepositpry.findByCategory("test")).thenReturn(Collections.singletonList(PRODUCT));
+		when(campaignRepository.getActiveCampaigns()).thenReturn(Collections.singletonList(testCampaignEntity));
+		ProductEntity returnedProduct = adService.serveAd("test");
 
 		assertEquals(returnedProduct, PRODUCT);		
 	}

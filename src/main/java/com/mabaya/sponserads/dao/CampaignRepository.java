@@ -15,12 +15,6 @@ public interface CampaignRepository extends CrudRepository<CampaignEntity, Integ
 	
 	// add 365 times year difference to make up dates like 05-01-2022
 	@Query(value = "SELECT * FROM campaign where " +
-			"(YEAR(CURRENT_DATE() - YEAR(startDate)) * 365 + DAYOFYEAR(CURRENT_DATE()) - DAYOFYEAR(startDate) < 10)", nativeQuery = true)
+			"(YEAR(CURRENT_DATE()) - YEAR(start_date)) * 365 + DAYOFYEAR(CURRENT_DATE()) - DAYOFYEAR(start_date) < 10", nativeQuery = true)
 	List<CampaignEntity> getActiveCampaigns();
-
-	@Query(value = 
-			"SELECT * from campaign INNER JOIN product " +
-			"ON campaign.product.id - product.id" +
-			"WHERE product.category = category", nativeQuery = true)
-	List<CampaignEntity> getProductByCategory(String category);
 }
