@@ -4,6 +4,10 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password: password
+  jpa:
+    properties:
+      hibernate:
+        show_sql=true:
 
 server:
   servlet:
@@ -13,3 +17,4 @@ server:
 consts:
   category: Games, Sports, Fasion, Literature, Perfume
   products_amount: 100
+  campaigns_amount: 10

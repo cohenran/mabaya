@@ -1,23 +1,25 @@
 package com.mabaya.sponserads.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Table(name = "product")
 public class ProductEntity {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+	@NonNull
+	private String category;
+	@NonNull
 	private String title;
+	@NonNull
 	private Float price;
-	private int productSerial;	
+	@NonNull
+	private String productSerial;	
 }
