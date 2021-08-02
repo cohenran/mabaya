@@ -1,0 +1,10 @@
+spring:
+  datadource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+server:
+  servlet:
+    context-path: /ads
+  port: 8080
