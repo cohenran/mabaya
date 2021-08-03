@@ -19,16 +19,9 @@ public interface CampaignRepository extends CrudRepository<CampaignEntity, Integ
 	List<CampaignEntity> getActiveCampaigns();
 	
 	@Query(value = 
-			"SELECT * from campaign campaign INNER JOIN product product " +
-			"ON campaign.productId = product.id INNER JOIN CAMPAIGN_PRODUCT_ENTITIES " + 
-			"ON product.id = CAMPAIGN_PRODUCT_ENTITIES.PRODUCT_ENTITIES_ID " +
-			"WHERE product.category = category", nativeQuery = true)
+			"SELECT * from campaign campaign INNER JOIN products_to_campaigns products_to_campaigns " + 
+			"ON campaign.name = products_to_campaigns.name INNER JOIN product product " +
+			"ON product.id = products_to_campaigns.id " /*+
+			"WHERE product.category = category"*/, nativeQuery = true)
 	List<CampaignEntity> getCampaignsByProductCategory(String category);
-	
-	@Query(value = "select table_name, column_name " +
-			"from information_schema.columns", nativeQuery = true)
-	List<String> columns();
-
-	@Query(value = "select * from CAMPAIGN_PRODUCT_ENTITIES", nativeQuery = true)
-	List<String> columns2();
 }

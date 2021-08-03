@@ -2,7 +2,7 @@ package com.mabaya.sponserads.service.impl;
 
 import com.mabaya.sponserads.dao.CampaignRepository;
 import com.mabaya.sponserads.dao.ProductRepository;
-import com.mabaya.sponserads.dao.ProductToCampaingsRepository;
+import com.mabaya.sponserads.dao.ProductToCampaignsRepository;
 import com.mabaya.sponserads.model.CampaignEntity;
 import com.mabaya.sponserads.model.ProductEntity;
 import com.mabaya.sponserads.model.ProductToCampaingsEntity;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +21,7 @@ public class AdServiceImpl implements AdService {
 	@Resource
 	private ProductRepository productRepositpry;
 	@Resource
-	private ProductToCampaingsRepository productToCampaingsRepository;
+	private ProductToCampaignsRepository productToCampaingsRepository;
 
 	@Override
 	public CampaignEntity createCampaign(String name, final CampaignEntity campaignEntity) {
@@ -31,13 +29,14 @@ public class AdServiceImpl implements AdService {
 		List<ProductEntity> productEntity = productRepositpry.getById(
 				campaignEntity.getProductToCampaingsEntity().stream().map(pc -> pc.getProductEntity().getId()).collect(Collectors.toList()));
 		
-		List<ProductToCampaingsEntity> productToCampaignsEntities = productEntity.stream().map(p -> new ProductToCampaingsEntity(p, campaignEntity)).collect(Collectors.toList());
+		List<ProductToCampaingsEntity> productToCampaignsEntities = productToCampaingsRepository.getByProductId(productEntity.stream().map(p -> p.getId()).collect(Collectors.toList()));
+		//List<ProductToCampaingsEntity> productToCampaignsEntities = productEntity.stream().map(p -> new ProductToCampaingsEntity(p)).collect(Collectors.toList());
 		
-		campaignEntity.setProductToCampaingsEntity(productToCampaignsEntities);
+	//	campaignEntity.setProductToCampaingsEntity(productToCampaignsEntities);
 
 		CampaignEntity savedCampaignEntity = campaignRepository.save(campaignEntity);
-		
-		productToCampaingsRepository.saveAll(productEntity.stream().map(p -> new ProductToCampaingsEntity(p, campaignEntity)).collect(Collectors.toList()));
+		productToCampaignsEntities.forEach(p -> p.setCampaignEntity(savedCampaignEntity));
+		productToCampaingsRepository.saveAll(productToCampaignsEntities);
 		
 		return savedCampaignEntity;
 	}
@@ -45,25 +44,26 @@ public class AdServiceImpl implements AdService {
 	@Override
 	@Transactional
 	public ProductEntity serveAd(String category) {
-		return null;
-	}/*
 		List<ProductEntity> productEntities = productRepositpry.findByCategory(category);
+
+		// get all the active campaign
+		List<CampaignEntity> activeCampaigns = campaignRepository.getCampaignsByProductCategory(category);
+		
 		ProductEntity returnedProduct;
 
-		if (productEntities.isEmpty()) {
+		if (productEntities.isEmpty() || activeCampaigns.size() == 0) {
 			returnedProduct = productRepositpry.getHighestBid();
 		} else {
-			// get all the active campaign
-			List<CampaignEntity> activeCampaigns = campaignRepository.getActiveCampaigns();
-			
 			// from all the active campaigns, get all the products to a list of list
-			List<List<ProductEntity>> listOfProductsByCampaign = activeCampaigns.stream().map(ac -> ac.getProductEntities()).collect(Collectors.toList());
+			List<List<ProductToCampaingsEntity>> listOfProductsByCampaign = activeCampaigns.stream().map(CampaignEntity::getProductToCampaingsEntity).
+					collect(Collectors.toList());				
 			
 			// combine the lists
 			List<ProductEntity> singleList =
 					listOfProductsByCampaign.stream()
 							.flatMap(List::stream)
-							.collect(Collectors.toList());
+							.collect(Collectors.toList()).stream().map(ProductToCampaingsEntity::getProductEntity).collect(Collectors.toList());
+			
 			// filter by selected category
 			singleList = singleList.stream().filter(p -> p.getCategory().equals(category)).collect(Collectors.toList());
 			// sort them to make the MAX on top
@@ -73,5 +73,5 @@ public class AdServiceImpl implements AdService {
 		}
 
 		return returnedProduct;
-	}*/
+	}
 }

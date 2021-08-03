@@ -5,28 +5,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @Entity
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "products_to_campaigns")
 public class ProductToCampaingsEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@NonNull
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	//@JsonBackReference
 	@JsonIgnoreProperties
-	@JoinColumn(name = "productId")
+	@JoinColumn(name = "product_id")
 	private ProductEntity productEntity;
 
-	@NonNull
 	@ManyToOne
-	@JsonBackReference
+	@JsonIgnoreProperties
 	@JoinColumn(name = "name")
 	private CampaignEntity campaignEntity;
 
@@ -37,5 +37,10 @@ public class ProductToCampaingsEntity {
 				", productEntity=" + productEntity.getId() +
 				", campaignEntity=" + campaignEntity.getName() +
 				'}';
+	}
+
+	public ProductToCampaingsEntity(@NonNull ProductEntity productEntity, CampaignEntity campaignEntity) {
+		this.productEntity = productEntity;
+		this.campaignEntity = campaignEntity;
 	}
 }
