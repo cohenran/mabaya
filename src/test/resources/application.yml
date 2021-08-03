@@ -10,7 +10,8 @@ spring:
       ddl-auto=update:
     properties:
       hibernate:
-        show_sql=true:
+        show_sql: true
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy        
 
 server:
   servlet:
