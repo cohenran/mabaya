@@ -52,7 +52,7 @@ public class AdServiceTest {
 		when(campaignRepository.save(testCampaignEntity)).thenReturn(testCampaignEntity);
 		when(productToCampaignsRepository.save(any())).thenReturn(new ProductToCampaingsEntity());
 		
-		CampaignEntity returnedCampaignEntity = adService.createCampaign("test", testCampaignEntity);
+		CampaignEntity returnedCampaignEntity = adService.createCampaign(testCampaignEntity);
 
 		assertEquals(returnedCampaignEntity, testCampaignEntity);
 	}
@@ -62,6 +62,7 @@ public class AdServiceTest {
 		when(productRepositpry.findByCategory("test")).thenReturn(Collections.singletonList(PRODUCT));
 		when(campaignRepository.getCampaignsByProductCategory("test")).thenReturn(Collections.singletonList(testCampaignEntity));
 		when(productToCampaignsRepository.save(any())).thenReturn(new ProductToCampaingsEntity());
+		when(productRepositpry.getHighestBid()).thenReturn(PRODUCT);
 		
 		ProductEntity returnedProduct = adService.serveAd("test");
 
