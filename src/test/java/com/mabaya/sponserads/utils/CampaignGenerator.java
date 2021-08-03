@@ -51,7 +51,7 @@ public class CampaignGenerator extends ProductsGenerator {
 			List<ProductToCampaingsEntity> productToCampaignsEntities = productEntities1.stream().map(ProductToCampaingsEntity::new).collect(Collectors.toList());
 			CampaignEntity campaignEntity = new CampaignEntity(String.valueOf(i), productToCampaignsEntities, LocalDate.now(), rnd.nextFloat());
 		
-			adsController.createCampaign(String.valueOf(i), campaignEntity);
+			adsController.createCampaign(campaignEntity);
 		}
 	}
 }

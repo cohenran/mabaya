@@ -24,15 +24,12 @@ public class AdServiceImpl implements AdService {
 	private ProductToCampaignsRepository productToCampaingsRepository;
 
 	@Override
-	public CampaignEntity createCampaign(String name, final CampaignEntity campaignEntity) {
-		campaignEntity.setName(name);
+	public CampaignEntity createCampaign(final CampaignEntity campaignEntity) {
+		campaignEntity.setName(campaignEntity.getName());
 		List<ProductEntity> productEntity = productRepositpry.getById(
 				campaignEntity.getProductToCampaingsEntity().stream().map(pc -> pc.getProductEntity().getId()).collect(Collectors.toList()));
 		
 		List<ProductToCampaingsEntity> productToCampaignsEntities = productToCampaingsRepository.getByProductId(productEntity.stream().map(p -> p.getId()).collect(Collectors.toList()));
-		//List<ProductToCampaingsEntity> productToCampaignsEntities = productEntity.stream().map(p -> new ProductToCampaingsEntity(p)).collect(Collectors.toList());
-		
-	//	campaignEntity.setProductToCampaingsEntity(productToCampaignsEntities);
 
 		CampaignEntity savedCampaignEntity = campaignRepository.save(campaignEntity);
 		productToCampaignsEntities.forEach(p -> p.setCampaignEntity(savedCampaignEntity));
@@ -45,9 +42,8 @@ public class AdServiceImpl implements AdService {
 	@Transactional
 	public ProductEntity serveAd(String category) {
 		List<ProductEntity> productEntities = productRepositpry.findByCategory(category);
-
-		// get all the active campaign
-		List<CampaignEntity> activeCampaigns = campaignRepository.getCampaignsByProductCategory(category);
+		
+		List<ProductEntity> activeCampaigns = productRepositpry.getCampaignsByProductCategory(category);
 		
 		ProductEntity returnedProduct;
 
@@ -55,7 +51,7 @@ public class AdServiceImpl implements AdService {
 			returnedProduct = productRepositpry.getHighestBid();
 		} else {
 			// from all the active campaigns, get all the products to a list of list
-			List<List<ProductToCampaingsEntity>> listOfProductsByCampaign = activeCampaigns.stream().map(CampaignEntity::getProductToCampaingsEntity).
+			List<List<ProductToCampaingsEntity>> listOfProductsByCampaign = activeCampaigns.stream().map(ProductEntity::getProductToCampaingsEntity).
 					collect(Collectors.toList());				
 			
 			// combine the lists

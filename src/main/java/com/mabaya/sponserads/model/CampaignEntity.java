@@ -16,17 +16,22 @@ import java.util.List;
 @Table(name = "campaign")
 public class CampaignEntity {
 	@Id
+	@ToString.Include
+	@EqualsAndHashCode.Include
 	private String name;
 
-//	@JsonManagedReference
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<ProductToCampaingsEntity> productToCampaingsEntity;
 
+	@ToString.Include
 	@EqualsAndHashCode.Include
 	@Column(name = "start_date")
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate startDate;
+
+	@ToString.Include
 	@EqualsAndHashCode.Include
 	private Float bid;
 

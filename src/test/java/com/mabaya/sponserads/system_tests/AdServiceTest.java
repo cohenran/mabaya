@@ -19,7 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,14 +43,12 @@ public class AdServiceTest {
 	@Autowired
 	private DBUtils dbUtils;
 
-	private Random rnd = new Random();
-
 	@Test
 	public void createCampaign() {
 		ProductToCampaingsEntity productToCampaingsEntity = new ProductToCampaingsEntity(dbUtils.getRandomProducts().get(0));
 		CampaignEntity testCampaignEntity = new CampaignEntity("test", Collections.singletonList(productToCampaingsEntity), LocalDate.of(2021, 01, 01), 0.1f);
 
-		CampaignEntity returnedCampaignEntity = adService.createCampaign("test", testCampaignEntity);
+		CampaignEntity returnedCampaignEntity = adService.createCampaign(testCampaignEntity);
 
 		assertEquals(testCampaignEntity, returnedCampaignEntity);
 	}
@@ -68,14 +68,14 @@ public class AdServiceTest {
 
 	@Test
 	public void serveAdGoodPromotedProductTest() {
-		Optional<ProductEntity> highestPriceProduct = productRepositpry.findAll().stream().max(Comparator.comparing(ProductEntity::getPrice));
+		Optional<ProductEntity> highestPriceProduct = productRepositpry.getHighestBidWithActiveCampaign("Games");
 
 		if (!highestPriceProduct.isPresent()) {
 			throw new BadInitException("No products were inited :(");
 		}
 
 		ProductEntity productEntity = adService.serveAd(highestPriceProduct.get().getCategory());
-
+		
 		assertEquals(productEntity, highestPriceProduct.get());
 	}
 }

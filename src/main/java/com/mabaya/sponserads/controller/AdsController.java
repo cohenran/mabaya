@@ -29,8 +29,8 @@ public class AdsController {
 	private ProductRepository productRepositpry;
 
 	@PostMapping("createCampaign")
-	public ResponseEntity<CampaignEntity> createCampaign(@RequestParam String name, @RequestBody CampaignEntity campaignEntity) {
-		CampaignEntity savedCampaignEntity = adService.createCampaign(name, campaignEntity);
+	public ResponseEntity<CampaignEntity> createCampaign(@RequestBody CampaignEntity campaignEntity) {
+		CampaignEntity savedCampaignEntity = adService.createCampaign(campaignEntity);
 
 		return new ResponseEntity<>(savedCampaignEntity, HttpStatus.OK);
 	}

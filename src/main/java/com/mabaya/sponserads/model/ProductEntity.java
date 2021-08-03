@@ -15,33 +15,31 @@ import java.util.List;
 @Table(name = "product")
 public class ProductEntity {
 	@Id
+	@ToString.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	//@JsonManagedReference
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<ProductToCampaingsEntity> productToCampaingsEntity;
 	
 	@NonNull
+	@ToString.Include
 	@EqualsAndHashCode.Include
 	private String category;
 	@NonNull
+	@ToString.Include
 	@EqualsAndHashCode.Include
 	private String title;
 	@NonNull
+	@ToString.Include
 	@EqualsAndHashCode.Include
 	private Float price;
 	@NonNull
+	@ToString.Include
 	@EqualsAndHashCode.Include
 	private String productSerial;
-
-	@Override
-	public String toString() {
-		return "ProductToCampaingsEntity{" +
-				"id=" + id +
-				'}';
-	}
 
 /*	@Override
 	public boolean equals(Object o) {

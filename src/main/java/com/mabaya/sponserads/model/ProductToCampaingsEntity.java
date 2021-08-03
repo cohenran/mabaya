@@ -34,8 +34,8 @@ public class ProductToCampaingsEntity {
 	public String toString() {
 		return "ProductToCampaingsEntity{" +
 				"id=" + id +
-				", productEntity=" + productEntity.getId() +
-				", campaignEntity=" + campaignEntity.getName() +
+				", productEntity=" + (productEntity == null ? "null" : productEntity.getId()) +
+				", campaignEntity=" + (campaignEntity == null ? "null" : campaignEntity.getName()) +
 				'}';
 	}
 
